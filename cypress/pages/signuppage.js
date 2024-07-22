@@ -51,3 +51,30 @@ export class SIGNUPPAGE1{
         this.btnNext.click()
     }
 }
+
+export class SIGNUPPAGE2{
+    constructor(){
+      cy.get('button[data-cy="button-submit"]').should("be.visible")
+      this.tbOtp =  cy.get('input[data-cy]')
+      this.btnSubmit = cy.get('button[data-cy="button-submit"]')
+    }
+    getAndVerifyOtpCode(apiKey,inboxId){
+        cy.wait(3000)
+        cy.mailslurp({apiKey}).then(function(mailslurp){
+            return mailslurp.waitForLatestEmail(inboxId,120_000,true)
+        }).then(email => /\b\d{6}\b/.exec(email.body.trim())[0]).then((code)=>{
+            this.tbOtp.then((elements)=>{
+                var count = 0
+                cy.log(elements.length)
+                for(var element of elements ){
+                    cy.wrap(element).type(code[count])
+                    count =count+1
+                }
+            })
+           
+        })
+
+        this.btnSubmit.click()
+    }
+   
+}
