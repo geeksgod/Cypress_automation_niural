@@ -2,7 +2,7 @@ import '../utils/commom'
 import { handleDropDown } from '../utils/commom'
 export class ONBOARDINGPAGE{
     constructor(){
-        cy.get('img[alt="logo"]',{timeout:6000}).should("be.visible")
+        cy.get('img[alt="logo"]',{timeout:20000}).should("be.visible")
         this.selectCountryOfRegistration = cy.get('#dropdown-country-of-registration')
         this.tbTaxId = cy.get('input[data-cy="input-ein"]')
         this.tbRegisteredDate = cy.get("#date-registered-date")

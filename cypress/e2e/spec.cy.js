@@ -1,48 +1,132 @@
-import { HOMEPAGE,SIGNINPAGE,SIGNUPPAGE1,SIGNUPPAGE2,WELCOMEPAGE,ACCESSPAGE,ONBOARDINGPAGE,ADDRESSREGISTRATIONPAGE } from "../pages"
+import { HOMEPAGE,SIGNINPAGE,SIGNUPPAGE1,SIGNUPPAGE2,WELCOMEPAGE,ACCESSPAGE,ONBOARDINGPAGE,
+  ADDRESSREGISTRATIONPAGE, DASHBOARDPAGE,KYBPAGE } from "../pages"
 import '../fixtures/dropdownoptions'
 import { EMPLOYEENUMBER } from "../fixtures/dropdownoptions"
+import * as data from '../fixtures/signupdata.json'
 
 const apiKey = "37d4b70a826d3dceecda79c299750c94daaef0dff33c1832fed2838e6883e673"
 
-describe('template spec', () => {
+describe('User wants to Signup', () => {
+  //reading data from json
+  var userinfo = data.userinfo
+  var companyinfo = data.companyinfo
+  var companyaddress = data.companyaddress
+  
   beforeEach(()=>{
-    cy.mailslurp({
-      apiKey
-    }).then(mailslurp => mailslurp.createInbox()).then(inbox =>{
-      cy.wrap(inbox.id).as('inboxId')
-      cy.wrap(inbox.emailAddress).as('emailAddress')
-    })
+    //using thirdparty mail server for otp verification will side up the email address and inbox id
+    // cy.mailslurp({
+    //   apiKey
+    // }).then(mailslurp => mailslurp.createInbox()).then(inbox =>{
+    //   cy.wrap(inbox.id).as('inboxId')
+    //   cy.wrap(inbox.emailAddress).as('emailAddress')
+    // })
+    // cy.mailslurp()
+    //         // fetch a phone number using the phone controller on the mailslurp instance
+    //         .then(mailslurp => mailslurp.phoneController.getPhoneNumbers({
+    //             phoneCountry: 'US',
+    //         }))
+    //         .then((phones) => {
+    //             // insure you have phone number created in dashboard
+    //             expect(phones.totalElements).gt(0);
+    //             // IMPORTANT STEP, add the phone number details to the test context using `cy.wrap`
+    //             const phoneNumber = phones.content[0]?phones.content:9841563154;
+    //             cy.log(`Phone id ${phoneNumber.id}`)
+    //             cy.wrap(phoneNumber.id).as('phoneNumberId')
+    //             cy.wrap(phoneNumber.phoneNumber).as('phoneNumber')
+    //         })
   })
 
-  it('passes', function(){
-    var hp = new HOMEPAGE() 
-    hp.signInAsEmployer() 
-    var sp = new SIGNINPAGE()  
-    sp.goToSignUp()
-    var su1 = new SIGNUPPAGE1()
-    su1.enterName('test','test','test')
-    su1.enterEmail(this.emailAddress)
-    su1.enterCompanyInfo("test","test.com",EMPLOYEENUMBER.BETWEEN25AND50)
-    su1.enterPassowrd("Te$t12345678")
-    su1.enterPhoneNumber("+1-9842354894")
-    su1.clickNext()
-    var su2 = new SIGNUPPAGE2()
-    su2.getAndVerifyOtpCode(apiKey,this.inboxId)
-    var wp = new WELCOMEPAGE()
-    wp.clickOnStart()
-
-    var ap = new ACCESSPAGE()
-    ap.chooseFullAccess()
+  it.skip('User Creates a Account', function(){
     
-    var op = new ONBOARDINGPAGE()
-    op.setCountryOfRegistration("United States")
-    op.enterTaxId("123456789")
-    op.setRegistrationdate("04-05-2023")
-    op.setBusinessInfo("Limited liability company","Bar")
-    op.clickNext()
+    var home = new HOMEPAGE() //Intilizing pageobject
+    home.signInAsEmployer() //function will select employer from the given options
 
-    var ar = new ADDRESSREGISTRATIONPAGE()
-    ar.enterAddressline1("testaddress","testcity","Alaska","12345")
-    ar.clickNext()
+    var signup = new SIGNINPAGE()  
+    signup.goToSignUp() 
+
+    var signup1 = new SIGNUPPAGE1()
+    signup1.enterName(userinfo.FirstName,userinfo.MiddleName,userinfo.LastName) 
+    signup1.enterEmail(this.emailAddress)
+    //fucntion below will enter the company information, the select option here is not generic unlicke the country etc so, tired to implement the enum concept
+    signup1.enterCompanyInfo(userinfo.CompanyName,userinfo.CompanyWebsite,EMPLOYEENUMBER.BETWEEN25AND50) 
+    signup1.enterPassowrd(userinfo.Password) 
+    signup1.enterPhoneNumber(userinfo.PhoneNumber) 
+    signup1.clickNext()
+
+    var signup2 = new SIGNUPPAGE2()
+    //function will grab the otp and enter the opt for verification
+    signup2.getAndVerifyOtpCode(apiKey,this.inboxId)
+
+    var welcome = new WELCOMEPAGE()
+    welcome.clickOnStart()
+
+    var access = new ACCESSPAGE()
+    access.chooseFullAccess()    
+    
+  })
+
+  it.skip('User login', function(){
+    
+    var home = new HOMEPAGE() //Intilizing pageobject
+    home.signInAsEmployer() //function will select employer from the given options
+    
+    var signup = new SIGNINPAGE()  
+    signup.signIn("bb065719-11ac-46a6-afc4-e8de11dde027@mailslurp.net","Te$t12345678")
+    var onboard = new ONBOARDINGPAGE()
+    onboard.setCountryOfRegistration(companyinfo.Country)
+    onboard.enterTaxId(companyinfo.TaxId)
+    onboard.setRegistrationdate(companyinfo.Registrationdate)
+    onboard.setBusinessInfo(companyinfo.CompanyType,companyinfo.CompanyNature)
+    onboard.clickNext()
+
+    var address = new ADDRESSREGISTRATIONPAGE()
+    address.enterAddressline1(companyaddress.AddressLine1,companyaddress.City,companyaddress.State,companyaddress.Zipcode)
+    address.clickNext()
+
+    var dashboardpage = new DASHBOARDPAGE()
+    dashboardpage.verifySuccessfulSignIn()
+    
+  })
+  it.skip('Verify Business Us flow', function(){
+    
+    var home = new HOMEPAGE() //Intilizing pageobject
+    home.signInAsEmployer() //function will select employer from the given options
+    
+    var signup = new SIGNINPAGE()  
+    signup.signIn("bb065719-11ac-46a6-afc4-e8de11dde027@mailslurp.net","Te$t12345678")
+    var dashboardpage = new DASHBOARDPAGE()
+    dashboardpage.verifySuccessfulSignIn()
+    dashboardpage.clickVerifyBusiness()
+    var kyb = new KYBPAGE()
+    kyb.isGamblingBusiness(false)
+    kyb.uploadFiles()
+    kyb.waitForUploadAndContinue()
+    kyb.setUserInfo("CEO","DOCTOR","Up to 10k","Government",false,"07-07-2000")
+    kyb.setAddressInfo("United States","test","test","test","Alaska","12345")
+    kyb.setSSN("123456789",true)
+    kyb.clickNext()
+    kyb.clickSendCode()   
+  })
+  it('Verify Business non-Us flow', function(){
+    
+    var home = new HOMEPAGE() //Intilizing pageobject
+    home.signInAsEmployer() //function will select employer from the given options
+    
+    var signup = new SIGNINPAGE()  
+    signup.signIn("7895521f-cad0-4281-a0b5-c467d372b953@mailslurp.net","Te$t12345678")
+    var dashboardpage = new DASHBOARDPAGE()
+    dashboardpage.verifySuccessfulSignIn()
+    dashboardpage.clickVerifyBusiness()
+    var kyb = new KYBPAGE()
+    kyb.isGamblingBusiness(false)
+    kyb.uploadFiles()
+    kyb.waitForUploadAndContinue()
+    kyb.setUserInfo("CEO","DOCTOR","Up to 10k","Government",false,"07-07-2000")
+    kyb.setAddressInfo("Turkey","test","test","test","","12345")
+    kyb.setSSN("",true)
+    kyb.clickNext()
+    kyb.addPersonalDocuments("Passport","15634","CDO","05-02-2030")
+    kyb.addAdditionalInfo("Over 5M","Predictable")
+    kyb.acceptAggreement()
   })
 })

@@ -1,0 +1,24 @@
+{
+"userinfo":{
+    "FirstName":"Ram",
+    "MiddleName":"",
+    "LastName":"Shrestha",
+    "CompanyName":"Water",
+    "CompanyWebsite":"Water.com",
+    "Password":"Te$t12345678",
+    "PhoneNumber": "+1-9842354894"
+    
+},
+"companyinfo":{
+    "Country":"United States",
+    "TaxId":"123456789",
+    "Registrationdate":"04-05-2023",
+    "CompanyType":"Limited liability company",
+    "CompanyNature":"Bar"
+},
+"companyaddress":{
+    "AddressLine1":"2101 E 3RD AVE",
+    "City":"ANCHORAGE AK",
+    "State":"Alaska",
+    "Zipcode":"12345"
+}}

@@ -54,14 +54,16 @@ export class SIGNUPPAGE1{
 
 export class SIGNUPPAGE2{
     constructor(){
+      //verifying the elements has loaded
       cy.get('button[data-cy="button-submit"]').should("be.visible")
+      //Initiazling the elements in the page
       this.tbOtp =  cy.get('input[data-cy]')
       this.btnSubmit = cy.get('button[data-cy="button-submit"]')
     }
+    
     getAndVerifyOtpCode(apiKey,inboxId){
-        cy.wait(3000)
         cy.mailslurp({apiKey}).then(function(mailslurp){
-            return mailslurp.waitForLatestEmail(inboxId,120_000,true)
+            return mailslurp.waitForLatestEmail(inboxId,12000,true)
         }).then(email => /\b\d{6}\b/.exec(email.body.trim())[0]).then((code)=>{
             this.tbOtp.then((elements)=>{
                 var count = 0
