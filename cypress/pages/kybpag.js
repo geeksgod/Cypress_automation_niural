@@ -1,12 +1,7 @@
 import '../utils/commom'
 import { checkAndType, handleDropDown } from '../utils/commom'
 export class KYBPAGE{
-    constructor(){
-       
-      
-       
-      
-    }
+   
 
     elements = {
         btnNoGamblng:() => cy.get('button[data-cy="button-no"]',{timeout:10000}),
@@ -43,15 +38,18 @@ export class KYBPAGE{
     
 
     isGamblingBusiness(isTrue){
-        this.elements.getBtnContinue().then(($el) => {
-            if ($el.length) {
-              cy.wrap($el).click()
-            } 
-            else{
-                if(isTrue) this.elements.btnYesGamblng().click()
-                else this.elements.btnNoGamblng().click()
-            }    })
-        
+        cy.get('body').then(($body) => {
+            if ($body.find('.mt-4 > .font-medium',{timeout:10000}).length > 0) {
+                this.elements.getBtnContinue().click();
+            } else {
+                
+                if (isTrue) {
+                    this.elements.btnYesGamblng().click();
+                } else {
+                    this.elements.btnNoGamblng().click();
+                }
+            }
+        });
     }
 
     uploadFiles(){
