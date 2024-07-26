@@ -5,7 +5,7 @@ export class ADDRESSREGISTRATIONPAGE{
         cy.get('input[data-cy="input-registeredAddress-zipCode"]',{timeout:10000}).should('be.visible')
         this.tbAddressLine1 = cy.get('input[data-cy="input-registeredAddress-address1"]')
         this.tbCity = cy.get('input[data-cy="input-registeredAddress-city"]')
-        this.selectState = cy.get('#dropdown-state')
+        this.selectState = cy.contains('div',"Select...").parent().find('input')
         this.tbZipcode = cy.get('input[data-cy="input-registeredAddress-zipCode"]')
         this.btnNext = cy.get('button[data-cy="button-next"')
     }

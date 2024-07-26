@@ -22,7 +22,7 @@
     "State":"Alaska",
     "Zipcode":"12345"
 },
-"vendorinfo":[
+"approverInfo":[
         {
             "FirstName":"Jack",
             "LastName":"Messer",
@@ -41,5 +41,35 @@
             "Phone":"+1-9845632541"
             
         }
-    ]
+    ],
+    
+    "vendorInfo":[
+            {
+                "BusinessName":"Samsung",
+                "Type":"Business",
+                "Country":"Canada",
+                "PayMethod":"US Domestic",
+                "AccountNumber":"4561238974526",
+                "RoutingNumber":"123456789"
+                
+            },
+            {
+                "BusinessName":"Niural",
+                "Type":"Business",
+                "Country":"Nepal",
+                "PayMethod":"US Domestic",
+                "AccountNumber":"4561238974528",
+                "RoutingNumber":"123456789"
+                
+            },
+            {
+                "BusinessName":"Google",
+                "Type":"Business",
+                "Country":"United States",
+                "PayMethod":"US Domestic",
+                "AccountNumber":"4561238974527",
+                "RoutingNumber":"123456789"
+                
+            }
+        ]
 }

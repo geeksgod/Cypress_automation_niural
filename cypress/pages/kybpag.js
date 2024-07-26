@@ -37,19 +37,18 @@ export class KYBPAGE{
     }
     
 
-    isGamblingBusiness(isTrue){
-        cy.get('body').then(($body) => {
-            if ($body.find('.mt-4 > .font-medium',{timeout:10000}).length > 0) {
-                this.elements.getBtnContinue().click();
-            } else {
+    isGamblingBusiness(isTrue){        
                 
-                if (isTrue) {
-                    this.elements.btnYesGamblng().click();
-                } else {
-                    this.elements.btnNoGamblng().click();
-                }
-            }
-        });
+        if (isTrue) {
+            this.elements.btnYesGamblng().click();
+        } else {
+            this.elements.btnNoGamblng().click();
+        }
+      
+    }
+
+    clickContinue(){
+        this.elements.getBtnContinue().click();
     }
 
     uploadFiles(){

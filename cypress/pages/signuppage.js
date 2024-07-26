@@ -12,10 +12,10 @@ export class SIGNUPPAGE1{
         this.tbEmail = cy.get('input[data-cy="input-email"]')
         this.tbCompanyName = cy.get('input[data-cy="input-company-name"]')
         this.tbCompanyWebsite = cy.get('input[data-cy="input-company-website"]')
-        this.selectNoOfEmployee = cy.get('#select-company-number-members')
+        this.selectNoOfEmployee = cy.get('#select-company-number-members input')
         this.tbPassoword = cy.get('input[data-cy="input-password"]')
         this.tbConfirmPassoword = cy.get('input[data-cy="input-confirm-password"]')
-        this.selectPhoneNumber = cy.get('#select-phone-extension')
+        this.selectPhoneNumber = cy.get('#select-phone-extension input')
         this.tbPhoneNumber = cy.get('input[data-cy="input-phone-number"]')
         this.btnNext =  cy.get('button[data-cy="button-next"]')
         

@@ -1,0 +1,32 @@
+{
+    "details" : [
+    {
+        "VendorName":"Niural20240726104308",
+        "BillDate":"2024-02-07",
+        "ScheduleDate" : "2024-08-02",        
+        "PaymentType" : "US Domestic Wire",
+        "PayTo": "**** - 4528", 
+        "Currency":"USD",       
+        "Amount":"USD 419.99"
+    },
+    {
+        "VendorName":"Google20240726104308",
+        "BillDate":"2024-02-07",
+        "ScheduleDate" : "2024-08-02",        
+        "PaymentType" : "US Domestic Wire",
+        "PayTo": "**** - 4646",
+        "Amount":"USD 419.99", 
+        "Currency":"USD"
+    },
+    {
+        "VendorName":"Samsung20240726104308",
+        "BillDate":"2024-02-07",
+        "ScheduleDate" : "2024-08-02",        
+        "PaymentType" : "US Domestic Wire",
+        "PayTo": "**** - 4526",
+        "Amount":"USD 419.99", 
+        "Currency":"USD"
+    }
+
+]
+}

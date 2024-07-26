@@ -8,6 +8,7 @@ export class ACCESSPAGE{
     chooseFullAccess(){
         this.btnFullaccess.click()
         this.btnNext.click()
+        cy.contains('h2',"Company Details")
     }
 
     

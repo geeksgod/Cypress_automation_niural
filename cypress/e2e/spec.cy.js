@@ -14,9 +14,12 @@ import {
 import "../fixtures/dropdownoptions";
 import { EMPLOYEENUMBER } from "../fixtures/dropdownoptions";
 import * as data from "../fixtures/signupdata.json";
+import * as payInfo from "../fixtures/paymentdata.json";
 
 const apiKey =
   "37d4b70a826d3dceecda79c299750c94daaef0dff33c1832fed2838e6883e673";
+
+
 
 describe("User wants to Signup", () => {
   //reading data from json
@@ -24,7 +27,7 @@ describe("User wants to Signup", () => {
   var companyinfo = data.companyinfo;
   var companyaddress = data.companyaddress;
 
-  beforeEach(() => {
+  before(() => {
     //using thirdparty mail server for otp verification will side up the email address and inbox id
     // cy.mailslurp({
     //   apiKey
@@ -60,7 +63,7 @@ describe("User wants to Signup", () => {
       userinfo.FirstName,
       userinfo.MiddleName,
       userinfo.LastName
-    );
+    );    
     signup1.enterEmail(this.emailAddress);
     //fucntion below will enter the company information, the select option here is not generic unlicke the country etc so, tired to implement the enum concept
     signup1.enterCompanyInfo(
@@ -83,13 +86,13 @@ describe("User wants to Signup", () => {
     access.chooseFullAccess();
   });
 
-  it.skip("User login", function () {
+  it.skip("User Onboarding", function () {
     var home = new HOMEPAGE(); //Intilizing pageobject
     home.signInAsEmployer(); //function will select employer from the given options
 
     var signup = new SIGNINPAGE();
     signup.signIn(
-      "bb065719-11ac-46a6-afc4-e8de11dde027@mailslurp.net",
+      "ab1c8219-7583-42ef-b06f-125f475e5b24@mailslurp.net",
       "Te$t12345678"
     );
     var onboard = new ONBOARDINGPAGE();
@@ -118,7 +121,7 @@ describe("User wants to Signup", () => {
 
     var signup = new SIGNINPAGE();
     signup.signIn(
-      "bb065719-11ac-46a6-afc4-e8de11dde027@mailslurp.net",
+      "ab1c8219-7583-42ef-b06f-125f475e5b24@mailslurp.net",
       "Te$t12345678"
     );
     var dashboardpage = new DASHBOARDPAGE();
@@ -154,15 +157,16 @@ describe("User wants to Signup", () => {
     home.signInAsEmployer(); //function will select employer from the given options
 
     var signup = new SIGNINPAGE();
-    signup.signIn(
-      "2de16ee5-83b6-4b7c-b2b7-a1c43febbac0@mailslurp.net",
+    signup.signIn("ab1c8219-7583-42ef-b06f-125f475e5b24@mailslurp.net",
+      //"2de16ee5-83b6-4b7c-b2b7-a1c43febbac0@mailslurp.net",
       "Te$t12345678"
     );
     var dashboardpage = new DASHBOARDPAGE();
     dashboardpage.verifySuccessfulSignIn();
     dashboardpage.clickVerifyBusiness();
     var kyb = new KYBPAGE();
-    kyb.isGamblingBusiness(false);
+    //kyb.isGamblingBusiness(false);
+    kyb.clickContinue();
     kyb.uploadFiles();
     kyb.waitForUploadAndContinue();
     kyb.setUserInfo(
@@ -181,13 +185,13 @@ describe("User wants to Signup", () => {
     kyb.acceptAggreement();
   });
 
-  it("Add uers", function () {
+  it.skip("Add users", function () {
     var home = new HOMEPAGE(); //Intilizing pageobject
     home.signInAsEmployer(); //function will select employer from the given options
 
     var signup = new SIGNINPAGE();
     signup.signIn(
-      "2de16ee5-83b6-4b7c-b2b7-a1c43febbac0@mailslurp.net",
+      "tinic89315@maxturns.com",
       "Te$t12345678"
     );
     var dashboardpage = new DASHBOARDPAGE();
@@ -197,12 +201,62 @@ describe("User wants to Signup", () => {
     var niuralpay = new NIURALPAYPAGE()
     //niuralpay.acceptAgreement()
     niuralpay.gotoUserANdPolicies()
-    // data.vendorinfo.forEach((info)=>{
-    //   niuralpay.gotoAddNewUser()
-    //   niuralpay.addNewUser(info.FirstName,info.LastName,`${info.FirstName}@gmail.com`,info.Phone)
-    // })
+    //looping through array of data
+    data.approverInfo.forEach((info)=>{
+      cy.mailslurp({
+        apiKey
+      }).then(mailslurp => mailslurp.createInbox()).then(inbox =>{        
+        niuralpay.gotoAddNewUser() 
+        niuralpay.addNewUser(info.FirstName,info.LastName,inbox.emailAddress,info.Phone)    
+      })    
+      
+    })
     niuralpay.goToPolicies()
     niuralpay.addPolicy("All",3)
     
   });
+
+  it.skip("Add vendor", function () {
+    var home = new HOMEPAGE(); //Intilizing pageobject
+    home.signInAsEmployer(); //function will select employer from the given options
+
+    var signup = new SIGNINPAGE();
+    signup.signIn(
+      "ab1c8219-7583-42ef-b06f-125f475e5b24@mailslurp.net",
+      "Te$t12345678"
+    );
+    var dashboardpage = new DASHBOARDPAGE();
+    dashboardpage.verifySuccessfulSignIn();
+    dashboardpage.goToNiuralPay();
+
+    var niuralpay = new NIURALPAYPAGE()
+    niuralpay.goToVendors()
+    data.vendorInfo.forEach((info)=>{
+    
+      niuralpay.addNewVendor(info.BusinessName,info.Type,info.Country,info.PayMethod,info.AccountNumber,info.RoutingNumber)
+    })
+    
+  });
+
+  it("Add Bills", function () {
+    var home = new HOMEPAGE(); //Intilizing pageobject
+    home.signInAsEmployer(); //function will select employer from the given options
+
+    var signup = new SIGNINPAGE();
+    signup.signIn(
+      "1f03129b-fd57-450a-9649-83585240301f@mailslurp.net",
+      "Te$t12345678"
+    );
+    var dashboardpage = new DASHBOARDPAGE();
+    dashboardpage.verifySuccessfulSignIn();
+    dashboardpage.goToNiuralPay();
+
+    var niuralpay = new NIURALPAYPAGE()
+    payInfo.details.forEach((info)=>{
+      niuralpay.addNewPayment(info.VendorName,info.BillDate,info.ScheduleDate,info.PaymentType,info.PayTo,info.Currency,info.Amount)
+    })
+    
+  });
+  
+  
 });

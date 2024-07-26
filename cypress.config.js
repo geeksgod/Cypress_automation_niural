@@ -2,10 +2,14 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   video:true,
+  videosFolder: 'cypress/videos',
+  retries:0,
+  defaultCommandTimeout:12000,
   e2e: {
     baseUrl:'https://qa.niural.com/',
     setupNodeEvents(on, config) {
       // implement node event listeners here
+      
     },
   },
   env:{
